@@ -28,10 +28,10 @@ MonoBehaviour:
     Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   UnitSizeConfigData:
   - UnitSizeType: 0
-    ScaleEffect: 2
+    ScaleEffect: 3
     HealthEffect: 50
   - UnitSizeType: 1
-    ScaleEffect: 1
+    ScaleEffect: 2
     HealthEffect: -50
   UnitColorConfigData:
   - Color: {r: 0, g: 0, b: 1, a: 0}

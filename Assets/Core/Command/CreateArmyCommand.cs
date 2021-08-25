@@ -27,15 +27,17 @@ namespace Core.Command
                 var unitColor = _unitConfigData.UnitColorConfigData.GetRandom();
                 var unitShape = _unitConfigData.UnitShapeConfigData.GetRandom();
                 var unitSize = _unitConfigData.UnitSizeConfigData.GetRandom();
+                var unitArmy = createArmyCommandData.ArmyId;
 
                 var unitData = new UnitData.Builder()
+                    .SetArmy(unitArmy)
                     .SetBase(unitBase)
                     .SetColor(unitColor)
                     .SetShape(unitShape)
                     .SetSize(unitSize)
                     .Build();
                 
-                _armiesData.AddUnitById(createArmyCommandData.ArmyId ,unitData);
+                _armiesData.AddUnit(unitData);
                 _unitControllerPool.Spawn(unitData);
             }
         }

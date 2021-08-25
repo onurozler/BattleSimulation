@@ -21,7 +21,8 @@ namespace Core.Command
                 var unitData = unitList[index];
                 var increaseVector = new Vector3(3 * (index % 5), 0, 3 * Mathf.FloorToInt(index / 5f));
                 
-                unitData.Position.Value = commandData.StartPosition + increaseVector;
+                unitData.InitialPosition.Value = commandData.StartPosition + increaseVector;
+                unitData.InitialRotation.Value = commandData.StartRotation;
             }
         }
     }

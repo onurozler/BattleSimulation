@@ -4,4 +4,9 @@ namespace Core.Command
     {
         void Execute(T commandData);
     }
+
+    public interface ICommand
+    {
+        void Execute();
+    }
 }

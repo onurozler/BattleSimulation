@@ -8,5 +8,6 @@ namespace Core.Model.Config.Game
     {
         public int ArmySize;
         public Vector3 StartPosition;
+        public Vector3 StartRotation;
     }
 }

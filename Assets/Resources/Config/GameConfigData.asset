@@ -15,5 +15,7 @@ MonoBehaviour:
   GameArmyConfigData:
   - ArmySize: 20
     StartPosition: {x: 0, y: 0, z: 0}
+    StartRotation: {x: 0, y: 0, z: 0}
   - ArmySize: 20
     StartPosition: {x: 0, y: 0, z: 20}
+    StartRotation: {x: 0, y: 180, z: 0}

@@ -2,11 +2,14 @@ using UnityEngine;
 
 namespace Core.View.Unit
 {
-    public interface IUnitView
+    public interface IUnitView : ICollidableView
     {
+        Vector3 Position { get; }
         void SetMesh(Mesh mesh);
         void SetColor(Color color);
         void SetSize(float size);
-        void SetPosition(Vector3 position);
+        void SetInitialPosition(Vector3 position);
+        void SetInitialRotation(Vector3 rotation);
+        void UpdatePosition(float speed, Vector3 rotation);
     }
 }

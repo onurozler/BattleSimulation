@@ -35,6 +35,11 @@ namespace Core.View.Player
             }
         }
 
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
         public void Hide()
         {
             gameObject.SetActive(false);

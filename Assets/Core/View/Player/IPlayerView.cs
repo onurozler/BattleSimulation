@@ -8,6 +8,7 @@ namespace Core.View.Player
         event Action<int> OnShufflePressed;
 
         void SetShuffleButtonsId(int[] buttonIds);
+        void Show();
         void Hide();
     }
 }

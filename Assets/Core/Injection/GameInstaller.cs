@@ -3,6 +3,7 @@ using Core.Controller;
 using Core.Model;
 using Core.Model.Config.Game;
 using Core.Model.Config.Unit;
+using Core.Util.Timing;
 using Core.View.Player;
 using Core.View.Unit;
 using UnityEngine;
@@ -19,9 +20,14 @@ namespace Core.Injection
         [Header("Views")]
         [SerializeField] private PlayerView playerView;
         [SerializeField] private UnitView unitView;
+
+        [Header("Helpers")] 
+        [SerializeField] private CoroutineTimingManager coroutineTimingManager;
         
         public override void InstallBindings()
         {
+            Container.Bind<ITimingManager>().FromInstance(coroutineTimingManager);
+            
             Container.Bind<IPlayerView>().FromInstance(playerView);
             Container.Bind<PlayerData>().AsSingle().NonLazy();
             Container.BindInterfacesTo<PlayerController>().AsSingle().NonLazy();
@@ -39,6 +45,7 @@ namespace Core.Injection
             Container.Bind<CreateArmyCommand>().AsSingle().NonLazy();
             Container.Bind<ShuffleArmyCommand>().AsSingle().NonLazy();
             Container.Bind<SetArmyPositionCommand>().AsSingle().NonLazy();
+            Container.Bind<KillUnitCommand>().AsSingle().NonLazy();
         }
     }
 }

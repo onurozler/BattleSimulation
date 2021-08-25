@@ -1,3 +1,4 @@
+using Core.Controller;
 using UnityEngine;
 
 namespace Core.Model.Commands
@@ -17,5 +18,12 @@ namespace Core.Model.Commands
     {
         public int ArmyId;
         public Vector3 StartPosition;
+        public Vector3 StartRotation;
+    }
+
+    public class KillUnitCommandData
+    {
+        public UnitController UnitController;
+        public UnitData UnitData;
     }
 }
