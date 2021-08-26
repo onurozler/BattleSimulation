@@ -17,8 +17,8 @@ namespace Core.Command
         
         public void Execute(KillUnitCommandData commandData)
         {
-            _armiesData.RemoveUnit(commandData.UnitData);
             _unitControllerPool.Despawn(commandData.UnitController);
+            _armiesData.RemoveUnit(commandData.UnitData);
         }
     }
 }

@@ -45,6 +45,11 @@ namespace Core.Model
             return _unitDataDictionary.TryGetValue(armyId, out var unitDataList) ? unitDataList : null;
         }
 
+        public IList<UnitData> GetAllUnits()
+        {
+            return _unitDataDictionary.Values.SelectMany(x => x).ToList();
+        }
+
         public UnitData GetClosestEnemyUnit(int armyId, Vector3 unitPosition)
         {
             var enemyArmy = _unitDataDictionary.GetOtherListRandomly(armyId);

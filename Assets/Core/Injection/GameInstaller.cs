@@ -1,6 +1,8 @@
 using Core.Command;
 using Core.Controller;
 using Core.Model;
+using Core.Model.Config;
+using Core.Model.Config.Formation;
 using Core.Model.Config.Game;
 using Core.Model.Config.Unit;
 using Core.Util.Timing;
@@ -26,7 +28,11 @@ namespace Core.Injection
         
         public override void InstallBindings()
         {
+            Container.Bind<FormationConfigData>().FromResources(Constants.FormationResourcesPath);
             Container.Bind<ITimingManager>().FromInstance(coroutineTimingManager);
+            
+            Container.BindInstance(Camera.main);
+            Container.BindInterfacesTo<CameraController>().AsSingle().NonLazy();
             
             Container.Bind<IPlayerView>().FromInstance(playerView);
             Container.Bind<PlayerData>().AsSingle().NonLazy();

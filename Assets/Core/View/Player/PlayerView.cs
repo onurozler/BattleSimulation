@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 namespace Core.View.Player
 {
@@ -11,9 +13,13 @@ namespace Core.View.Player
 
         [SerializeField] 
         private Button[] shuffleButtons;
+
+        [SerializeField] 
+        private Dropdown[] formationDropDowns;
                 
         public event Action OnPlayPressed;
         public event Action<int> OnShufflePressed;
+        public event Action<int,int> OnFormationPressed; 
 
         private void Awake()
         {
@@ -33,6 +39,14 @@ namespace Core.View.Player
                 var buttonIndex = buttonIds[i];
                 shuffleButton.onClick.AddListener(()=>OnShufflePressed?.Invoke(buttonIndex));
             }
+        }
+
+        public void SetDropDownButtons(int index, List<string> options)
+        {
+            formationDropDowns[index].onValueChanged.AddListener((formationId)=>
+                OnFormationPressed?.Invoke(index,formationId));
+            formationDropDowns[index].ClearOptions();
+            formationDropDowns[index].AddOptions(options);
         }
 
         public void Show()

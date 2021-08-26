@@ -53,8 +53,21 @@ namespace Core.View.Unit
             collidableView = null;
             return false;
         }
-        
 
-        public class Pool : MonoMemoryPool<UnitView>{}
+
+        public class Pool : MonoMemoryPool<UnitView>
+        {
+            protected override void OnSpawned(UnitView item)
+            {
+                base.OnSpawned(item);
+                item.rigidBody.isKinematic = false;
+            }
+
+            protected override void OnDespawned(UnitView item)
+            {
+                base.OnDespawned(item);
+                item.rigidBody.isKinematic = true;
+            }
+        }
     }
 }

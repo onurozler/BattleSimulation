@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Core.Command;
 using Core.Model;
 using Core.Model.Commands;
@@ -10,7 +8,7 @@ using Zenject;
 
 namespace Core.Controller
 {
-    public class UnitController : IFixedTickable, IDisposable
+    public class UnitController : IFixedTickable
     {
         [Inject]
         private PlayerData _playerData;
@@ -37,10 +35,12 @@ namespace Core.Controller
             _unitData.InitialPosition.Subscribe(_unitView.SetInitialPosition);
             _unitData.InitialRotation.Subscribe(_unitView.SetInitialRotation);
             _unitData.Health.Subscribe(OnUnitHealthChanged);
+            _playerData.State.Subscribe(OnStateChanged);
         }
         public void FixedTick()
         {
-            if (_playerData.State.Value == SimulationState.Playing)
+            var canUpdateUnit = _playerData.State.Value == SimulationState.Playing && _unitData != null;
+            if (canUpdateUnit)
             {
                 _unitData.CurrentPosition = _unitView.Position;
                 var targetUnit = _armiesData.GetClosestEnemyUnit(_unitData.ArmyId.Value, _unitData.CurrentPosition);
@@ -58,10 +58,8 @@ namespace Core.Controller
                         }
                     }
                 }
-                else
-                {
-                    _unitView.UpdatePosition(_unitData.Speed,direction);
-                }
+
+                _unitView.UpdatePosition(_unitData.Speed,direction);
             }
         }
 
@@ -77,7 +75,20 @@ namespace Core.Controller
             }
         }
 
-        public void Dispose()
+        private void OnStateChanged(SimulationState state)
+        {
+            if (state == SimulationState.GameSettings)
+            {
+                _killUnitCommand.Execute(new KillUnitCommandData
+                {
+                    UnitController = this,
+                    UnitData = _unitData
+                });
+            }
+        }
+
+
+        private void Dispose()
         {
             _unitData.Size.Unsubscribe(_unitView.SetSize);
             _unitData.Mesh.Unsubscribe(_unitView.SetMesh);
@@ -85,6 +96,7 @@ namespace Core.Controller
             _unitData.InitialPosition.Unsubscribe(_unitView.SetInitialPosition);
             _unitData.InitialRotation.Unsubscribe(_unitView.SetInitialRotation);
             _unitData.Health.Unsubscribe(OnUnitHealthChanged);
+            _playerData.State.Unsubscribe(OnStateChanged);
         }
 
         #region Pool
@@ -97,14 +109,14 @@ namespace Core.Controller
             protected override void OnCreated(UnitController item)
             {
                 base.OnCreated(item);
+                Container.Resolve<TickableManager>().AddFixed(item);
                 Container.Inject(item);
             }
 
             protected override void Reinitialize(UnitData unitData, UnitController item)
             {
                 base.Reinitialize(unitData, item);
-                Container.Resolve<DisposableManager>().Add(item);
-                Container.Resolve<TickableManager>().AddFixed(item);
+
                 item._unitView = _unitViewPool.Spawn();
                 item._unitData = unitData;
                 item.Initialize();
@@ -116,8 +128,11 @@ namespace Core.Controller
                 item.Dispose();
                 item._unitData = null;
                 _unitViewPool.Despawn(item._unitView as UnitView);
-                
-                Container.Resolve<DisposableManager>().Remove(item);
+            }
+
+            protected override void OnDestroyed(UnitController item)
+            {
+                base.OnDestroyed(item);
                 Container.Resolve<TickableManager>().RemoveFixed(item);
             }
         }

@@ -1,4 +1,5 @@
 using Core.Controller;
+using Core.Model.Config.Formation;
 using UnityEngine;
 
 namespace Core.Model.Commands
@@ -14,11 +15,12 @@ namespace Core.Model.Commands
         public int ArmyId;
     }
 
-    public struct SetArmyPositionCommandData
+    public class SetArmyPositionCommandData
     {
         public int ArmyId;
         public Vector3 StartPosition;
         public Vector3 StartRotation;
+        public FormationConfigData FormationConfigData;
     }
 
     public class KillUnitCommandData
