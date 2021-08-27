@@ -3,7 +3,7 @@ namespace Core.Model.Config
     public static class Constants
     {
         public const int UnitLayer = 1 << 8;
-        public const float UnitSpacing = 3f;
+        public const float UnitSpacing = 4f;
         public const int UnitViewPoolCount = 20;
         public const int UnitParticlePoolCount = 10;
         

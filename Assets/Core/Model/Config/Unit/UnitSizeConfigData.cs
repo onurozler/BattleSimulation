@@ -7,7 +7,7 @@ namespace Core.Model.Config.Unit
     public class UnitSizeConfigData
     {
         public UnitSizeType UnitSizeType;
-        [Range(0, 2)] 
+        [Range(0, 3)] 
         public float ScaleEffect;
         public int HealthEffect;
     }
