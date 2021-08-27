@@ -26,27 +26,21 @@ namespace Core.View.Player
             playButton.onClick.AddListener(()=>OnPlayPressed?.Invoke());
         }
 
-        public void SetShuffleButtonsId(int[] buttonIds)
+        public void SetShuffleButton(int buttonId, int armyId)
         {
-            if (buttonIds.Length != shuffleButtons.Length)
-            {
-                throw new Exception("Shuffle Buttons and ids must be same lenght!");
-            }
-            
-            for (int i = 0; i < shuffleButtons.Length; i++)
-            {
-                var shuffleButton = shuffleButtons[i];
-                var buttonIndex = buttonIds[i];
-                shuffleButton.onClick.AddListener(()=>OnShufflePressed?.Invoke(buttonIndex));
-            }
+            var shuffleButton = shuffleButtons[buttonId];
+            shuffleButton.onClick.RemoveAllListeners();
+            shuffleButton.onClick.AddListener(()=>OnShufflePressed?.Invoke(armyId));
         }
 
-        public void SetDropDownButtons(int index, List<string> options)
+        public void SetDropDownButton(int index, List<string> options)
         {
-            formationDropDowns[index].onValueChanged.AddListener((formationId)=>
-                OnFormationPressed?.Invoke(index,formationId));
-            formationDropDowns[index].ClearOptions();
-            formationDropDowns[index].AddOptions(options);
+            var formationDropDown = formationDropDowns[index];
+            
+            formationDropDown.onValueChanged.RemoveAllListeners();
+            formationDropDown.onValueChanged.AddListener((formationId)=> OnFormationPressed?.Invoke(index,formationId));
+            formationDropDown.ClearOptions();
+            formationDropDown.AddOptions(options);
         }
 
         public void Show()

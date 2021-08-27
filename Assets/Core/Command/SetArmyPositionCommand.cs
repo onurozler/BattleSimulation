@@ -1,17 +1,12 @@
+using System;
 using Core.Model;
-using Core.Model.Commands;
 using Core.Model.Config;
-using Core.Model.Config.Formation;
 using UnityEngine;
-using Zenject;
 
 namespace Core.Command
 {
-    public class SetArmyPositionCommand : ICommand<SetArmyPositionCommandData>
+    public class SetArmyPositionCommand : ICommand<SetArmyPositionSignal>
     {
-        [Inject]
-        private FormationConfigData[] _formationConfigDatas;
-        
         private readonly ArmiesData _armiesData;
 
         public SetArmyPositionCommand(ArmiesData armiesData)
@@ -19,18 +14,23 @@ namespace Core.Command
             _armiesData = armiesData;
         }
 
-        public void Execute(SetArmyPositionCommandData commandData)
+        public void Execute(SetArmyPositionSignal signal)
         {
-            var formationPositions = commandData.FormationConfigData.Positions;
-            var unitList=_armiesData.GetUnitsById(commandData.ArmyId);
+            var unitList=_armiesData.GetUnitsById(signal.ArmyId);
+            if (unitList.Count != signal.FormationConfigData.UnitSize)
+            {
+                throw new Exception("Unit size and formation size must match!");
+            }
+            
+            var formationPositions = signal.FormationConfigData.Positions;
             for (var i = 0; i < unitList.Count; i++)
             {
                 var unitData = unitList[i];
                 var increaseVector = new Vector3(Constants.UnitSpacing * formationPositions[i].x, 0, Constants.UnitSpacing * -formationPositions[i].y);
 
-                increaseVector = Quaternion.AngleAxis(commandData.StartRotation.y, Vector3.right) * increaseVector;
-                unitData.InitialPosition.Value = commandData.StartPosition + increaseVector;
-                unitData.InitialRotation.Value = commandData.StartRotation;
+                increaseVector = Quaternion.AngleAxis(signal.StartRotation.y, Vector3.right) * increaseVector;
+                unitData.InitialPosition.Value = signal.StartPosition + increaseVector;
+                unitData.InitialRotation.Value = signal.StartRotation;
             }
         }
     }

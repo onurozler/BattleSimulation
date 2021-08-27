@@ -7,10 +7,10 @@ namespace Core.View.Player
     {
         event Action OnPlayPressed;
         event Action<int> OnShufflePressed;
-        event Action<int,int> OnFormationPressed; 
+        event Action<int,int> OnFormationPressed;
 
-        void SetShuffleButtonsId(int[] buttonIds);
-        void SetDropDownButtons(int index, List<string> options);
+        void SetShuffleButton(int buttonId, int armyId);
+        void SetDropDownButton(int index, List<string> options);
         void Show();
         void Hide();
     }

@@ -1,24 +1,23 @@
-using Core.Controller;
 using Core.Model;
-using Core.Model.Commands;
+using Core.Pool;
 
 namespace Core.Command
 {
-    public class KillUnitCommand : ICommand<KillUnitCommandData>
+    public class KillUnitCommand : ICommand<KillUnitSignal>
     {
         private readonly ArmiesData _armiesData;
-        private readonly UnitController.Pool _unitControllerPool;
+        private readonly UnitControllerPool _unitControllerPool;
         
-        public KillUnitCommand(ArmiesData armiesData, UnitController.Pool unitControllerPool)
+        public KillUnitCommand(ArmiesData armiesData, UnitControllerPool unitControllerPool)
         {
             _armiesData = armiesData;
             _unitControllerPool = unitControllerPool;
         }
         
-        public void Execute(KillUnitCommandData commandData)
+        public void Execute(KillUnitSignal signal)
         {
-            _unitControllerPool.Despawn(commandData.UnitController);
-            _armiesData.RemoveUnit(commandData.UnitData);
+            _unitControllerPool.Despawn(signal.UnitController);
+            _armiesData.RemoveUnit(signal.UnitData);
         }
     }
 }

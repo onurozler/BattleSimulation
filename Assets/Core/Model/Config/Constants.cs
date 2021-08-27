@@ -7,5 +7,7 @@ namespace Core.Model.Config
 
         public const string FormationResourcesPath = "Config/Formations";
         public const string FormationAssetPath = "Assets/Resources/Config/Formations/";
+
+        public const float CameraSpeed = 2f;
     }
 }

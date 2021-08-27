@@ -1,11 +1,10 @@
 using Core.Model;
-using Core.Model.Commands;
 using Core.Model.Config.Unit;
 using Core.Util;
 
 namespace Core.Command
 {
-    public class ShuffleArmyCommand : ICommand<ShuffleArmyCommandData>
+    public class ShuffleArmyCommand : ICommand<ShuffleArmySignal>
     {
         private readonly ArmiesData _armiesData;
         private readonly UnitConfigData _unitConfigData;
@@ -16,9 +15,9 @@ namespace Core.Command
             _unitConfigData = unitConfigData;
         }
 
-        public void Execute(ShuffleArmyCommandData commandData)
+        public void Execute(ShuffleArmySignal signal)
         {
-            var armyUnits = _armiesData.GetUnitsById(commandData.ArmyId);
+            var armyUnits = _armiesData.GetUnitsById(signal.ArmyId);
             for (int i = 0; i < armyUnits.Count; i++)
             {
                 var unitBase = _unitConfigData.UnitBaseConfigData;

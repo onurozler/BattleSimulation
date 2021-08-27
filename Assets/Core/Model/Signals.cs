@@ -2,20 +2,20 @@ using Core.Controller;
 using Core.Model.Config.Formation;
 using UnityEngine;
 
-namespace Core.Model.Commands
+namespace Core.Model
 {
-    public struct CreateArmyCommandData
+    public class CreateArmySignal
     {
         public int ArmyId;
         public int ArmySize;
     }
 
-    public struct ShuffleArmyCommandData
+    public class ShuffleArmySignal
     {
         public int ArmyId;
     }
 
-    public class SetArmyPositionCommandData
+    public class SetArmyPositionSignal
     {
         public int ArmyId;
         public Vector3 StartPosition;
@@ -23,7 +23,7 @@ namespace Core.Model.Commands
         public FormationConfigData FormationConfigData;
     }
 
-    public class KillUnitCommandData
+    public class KillUnitSignal
     {
         public UnitController UnitController;
         public UnitData UnitData;

@@ -1,25 +1,25 @@
+using System;
 using Core.Model;
-using UnityEngine;
+using Core.View.Camera;
 using Zenject;
 
 namespace Core.Controller
 {
-    public class CameraController :  ITickable
+    public class CameraController :  ITickable, IDisposable
     {
-        [Inject] 
-        private Camera _mainCamera;
-
-        [Inject] 
+        private ICameraView _cameraView;
+        private CameraData _cameraData;
         private ArmiesData _armiesData;
-
-        private Vector3 _offset;
-        
         private PlayerData _playerData;
 
         [Inject]
-        private void Initialize(PlayerData playerData)
+        private void Initialize(CameraData cameraData, ICameraView cameraView,PlayerData playerData, ArmiesData armiesData)
         {
+            _cameraView = cameraView;
+            _cameraData = cameraData;
             _playerData = playerData;
+            _armiesData = armiesData;
+            
             _playerData.State.Subscribe(OnSimulationStateChanged);
         }
 
@@ -27,28 +27,38 @@ namespace Core.Controller
         {
             if (simulationState == SimulationState.Playing)
             {
-                _offset = _mainCamera.transform.position - GetMiddlePosition();
+                UpdateCameraPosition();
+                _cameraView.SetOffset(_cameraData.Position);
+            }
+            else
+            {
+                _cameraView.ResetPosition();
             }
         }
 
         public void Tick()
         {
-            if (_playerData.State.Value != SimulationState.Playing)
+            if (_playerData.State.Value == SimulationState.GameSettings)
                 return;
             
-            //_mainCamera.transform.position = _offset + GetMiddlePosition();
+            UpdateCameraPosition();
+            _cameraView.UpdatePosition(_cameraData.Position, _cameraData.Speed);
         }
 
-        private Vector3 GetMiddlePosition()
+        private void UpdateCameraPosition()
         {
-            var averagePosition = Vector3.zero;
+            _cameraData.ResetPosition();
             foreach (var unitData in _armiesData.GetAllUnits())
             {
-                averagePosition += unitData.CurrentPosition;
+                _cameraData.Position += unitData.CurrentPosition;
             }
 
-            averagePosition /= _armiesData.GetAllUnits().Count;
-            return averagePosition;
+            _cameraData.Position /= _armiesData.GetAllUnits().Count;
+        }
+
+        public void Dispose()
+        {
+            _playerData.State.Unsubscribe(OnSimulationStateChanged);
         }
     }
 }

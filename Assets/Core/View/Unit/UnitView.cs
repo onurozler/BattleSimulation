@@ -1,5 +1,4 @@
 using UnityEngine;
-using Zenject;
 
 namespace Core.View.Unit
 {
@@ -13,7 +12,8 @@ namespace Core.View.Unit
 
         [SerializeField] 
         private Rigidbody rigidBody;
-        
+
+        public Rigidbody Rigidbody => rigidBody;
         public int CollisionId { get; private set; }
         public Vector3 Position => transform.position;
 
@@ -52,22 +52,6 @@ namespace Core.View.Unit
 
             collidableView = null;
             return false;
-        }
-
-
-        public class Pool : MonoMemoryPool<UnitView>
-        {
-            protected override void OnSpawned(UnitView item)
-            {
-                base.OnSpawned(item);
-                item.rigidBody.isKinematic = false;
-            }
-
-            protected override void OnDespawned(UnitView item)
-            {
-                base.OnDespawned(item);
-                item.rigidBody.isKinematic = true;
-            }
         }
     }
 }

@@ -55,10 +55,5 @@ namespace Core.Model
             var enemyArmy = _unitDataDictionary.GetOtherListRandomly(armyId);
             return enemyArmy.OrderBy(unit => Vector3.Distance(unit.CurrentPosition, unitPosition)).FirstOrDefault();
         }
-
-        public void Clear()
-        {
-            _unitDataDictionary.Clear();
-        }
     }
 }
