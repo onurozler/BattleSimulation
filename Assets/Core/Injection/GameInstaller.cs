@@ -25,6 +25,7 @@ namespace Core.Injection
         [SerializeField] private PlayerView playerView;
         [SerializeField] private UnitView unitView;
         [SerializeField] private CameraView cameraView;
+        [SerializeField] private ParticleSystem unitAttackParticle;
 
         [Header("Helpers")] 
         [SerializeField] private CoroutineTimingManager coroutineTimingManager;
@@ -43,11 +44,16 @@ namespace Core.Injection
             Container.Bind<PlayerData>().AsSingle().NonLazy();
             Container.BindInterfacesTo<PlayerController>().AsSingle().NonLazy();
 
+            Container.BindMemoryPool<ParticleSystem, UnitAttackParticlePool>()
+                .WithInitialSize(Constants.UnitParticlePoolCount)
+                .FromComponentInNewPrefab(unitAttackParticle)
+                .UnderTransform(new GameObject("UnitParticlesPool").transform);
+                
             Container.BindMemoryPool<UnitController, UnitControllerPool>();
             Container.BindMemoryPool<UnitView, UnitViewPool>()
-                .WithInitialSize(20)
+                .WithInitialSize(Constants.UnitViewPoolCount)
                 .FromComponentInNewPrefab(unitView)
-                .UnderTransform(new GameObject("UnitPool").transform);
+                .UnderTransform(new GameObject("UnitViewPool").transform);
 
             Container.BindInstance(gameConfigData);
             Container.BindInstance(unitConfigData);

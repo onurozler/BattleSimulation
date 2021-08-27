@@ -1556,6 +1556,7 @@ MonoBehaviour:
   unitView: {fileID: 4460423805861921835, guid: 16d24f447bc6644ba88b7ed818454bd2,
     type: 3}
   cameraView: {fileID: 963194229}
+  unitAttackParticle: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
   coroutineTimingManager: {fileID: 998437172}
 --- !u!4 &479633989
 Transform:

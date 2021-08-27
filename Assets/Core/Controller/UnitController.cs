@@ -1,5 +1,6 @@
 using Core.Model;
 using Core.Model.Config;
+using Core.Pool;
 using Core.Util.Timing;
 using Core.View.Unit;
 using Zenject;
@@ -19,6 +20,9 @@ namespace Core.Controller
 
         [Inject] 
         private ITimingManager _timingManager;
+
+        [Inject] 
+        private UnitAttackParticlePool _unitAttackParticlePool;
 
         public IUnitView UnitView => _unitView;
 
@@ -67,6 +71,8 @@ namespace Core.Controller
         {
             _isAttackCoolDownFinished = false;
             _timingManager.SetInterval(_unitData.AttackSpeed, () => _isAttackCoolDownFinished = true);
+            _unitAttackParticlePool.Spawn(targetUnit.CurrentPosition);
+            
             targetUnit.Health.Value -= _unitData.Attack;
         }
 
